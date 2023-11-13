@@ -71,24 +71,24 @@ class TestDeathNote {
 
     
     @Test
-    boolean testWriteDetails() throws InterruptedException {
+    void testWriteDetails() throws InterruptedException {
         try {
-            this.myDeathNote.writeDeathCause("drowned");
-        } catch (IllegalArgumentException e) {
-            Assertions.assertEquals("You cannot write death cause before writing a name", e.getMessage());
+            this.myDeathNote.writeDetails("drowned");
+        } catch (IllegalStateException e) {
+            Assertions.assertEquals("The DeathNote is empty or the details are null.", e.getMessage());
         }
         String currentName;
         this.myDeathNote.writeName("Pietro");
         currentName = "Pietro";
         Assertions.assertTrue(this.myDeathNote.getDeathCause(currentName) == "heart attack"
             && this.myDeathNote.getDeathDetails(currentName) == null);
-        this.myDeathNote.writeDetails("ran for too long");
-        Assertions.assertTrue("ran for too long" == this.myDeathNote.getDeathDetails(currentName));
+        Assertions.assertTrue(this.myDeathNote.writeDetails("ran for too long"));
+        Assertions.assertEquals("ran for too long", this.myDeathNote.getDeathDetails(currentName));
         this.myDeathNote.writeName("Christian");
         currentName = "Christian";
         Thread.sleep(6100);
         this.myDeathNote.writeDetails("died");
-        return false;
+        Assertions.assertNotEquals("died", this.myDeathNote.getDeathDetails(currentName));
     }
     
 }
