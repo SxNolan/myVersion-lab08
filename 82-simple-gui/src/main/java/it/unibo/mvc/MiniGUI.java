@@ -1,9 +1,13 @@
 package it.unibo.mvc;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,8 +31,13 @@ public class MiniGUI {
      * Creates a new {@link MiniGUI}.
      */
     public MiniGUI() {
+        
         final JPanel canvas = new JPanel();
         canvas.setLayout(new BorderLayout());
+
+        /*Added myTextField here because the button needs to use it for the 
+        final request of the exercise.*/
+        JTextField myTextField = new JTextField("Result");
         final JButton write = new JButton("Print a random number on standard output");
         canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
@@ -39,9 +48,19 @@ public class MiniGUI {
         write.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                System.out.println(randomGenerator.nextInt());
+                int myNumber = randomGenerator.nextInt();
+                System.out.println(myNumber);
+                myTextField.setText("Result: " + String.valueOf(myNumber));
             }
         });
+
+        //Starting with exercise
+        final JPanel myPanel = new JPanel();
+        myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.X_AXIS));
+        canvas.add(myPanel, BorderLayout.CENTER);
+        myPanel.add(write);
+        canvas.add(myTextField, BorderLayout.NORTH);
+
     }
 
     private void display() {
@@ -68,6 +87,7 @@ public class MiniGUI {
          * Resize the frame to minimum size
          */
         frame.pack();
+        
         /*
          * OK, ready to pull the frame onscreen
          */
